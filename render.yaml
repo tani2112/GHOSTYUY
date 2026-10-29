@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: haunted-terminal
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn web_app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    healthCheckPath: /api/status
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: GHOST_MOOD
+        value: cursed
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: OLLAMA_HOST
+        value: "" # Optional: URL of an external Ollama endpoint; fallback engine activates automatically if empty

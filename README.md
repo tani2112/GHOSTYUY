@@ -7,6 +7,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Ollama](https://img.shields.io/badge/Ollama-Local%20Inference-000000?style=for-the-badge&logo=ollama&logoColor=white)](https://ollama.com)
 [![Open-Weight Model](https://img.shields.io/badge/Model-Qwen%202.5%20%7C%20Llama%203.2-6f42c1?style=for-the-badge)](https://huggingface.co)
+[![Render](https://img.shields.io/badge/Render-Deploy%20Live-46e3b7?style=for-the-badge&logo=render&logoColor=white)](https://render.com)
 [![License](https://img.shields.io/badge/License-Apache%202.0-28a745?style=for-the-badge)](LICENSE)
 [![Hackathon](https://img.shields.io/badge/Hacktoberfest%202026-Ghost%20in%20the%20Machine-ff6b6b?style=for-the-badge)](https://dev.to/challenges/hf26)
 
@@ -248,7 +249,39 @@ python3 main.py --fast
 
 # Run in pure offline / procedural fallback mode
 python3 main.py --offline
+
+# Run the Web Terminal locally
+python3 web_app.py
+# (Then open http://localhost:5000 in your browser)
 ```
+
+---
+
+### Step 4: Deploying to Render (1-Click Cloud Deployment)
+
+Haunted Terminal is configured for seamless deployment on **Render** as a web service. This provides hackathon judges with an immediate interactive web terminal without requiring any local installations!
+
+#### Option A: Deploy with Render Blueprint (`render.yaml`)
+1. Go to your [Render Dashboard](https://dashboard.render.com).
+2. Click **New +** → **Blueprint**.
+3. Select your repository: `https://github.com/tani2112/GHOSTYUY`.
+4. Render will automatically detect [`render.yaml`](render.yaml) and configure:
+   - **Environment:** Python
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn web_app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120`
+5. Click **Apply**. Within 60 seconds, your live Haunted Terminal will be accessible at `https://haunted-terminal-xxxx.onrender.com`!
+
+#### Option B: Deploy Manually as a Web Service
+1. In Render, click **New +** → **Web Service**.
+2. Connect `https://github.com/tani2112/GHOSTYUY`.
+3. Set the following fields:
+   - **Runtime:** `Python 3`
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn web_app:app --bind 0.0.0.0:$PORT`
+   - **Instance Type:** `Free`
+4. Click **Deploy Web Service**!
+
+> 🏆 **Hackathon Note:** This live deployment qualifies for the **Best Use of Render** ($200) featured prize category for Hacktoberfest Week 4!
 
 ---
 

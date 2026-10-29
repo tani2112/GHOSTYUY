@@ -224,5 +224,51 @@ class TestTerminalUI(unittest.TestCase):
         self.assertIn("daemon_whisperer", summary)
 
 
+class TestWebApp(unittest.TestCase):
+    """Test Flask Web App routes and API command execution."""
+
+    def setUp(self):
+        try:
+            from web_app import app
+            self.app = app
+            self.client = app.test_client()
+        except ImportError:
+            self.skipTest("Flask not installed in system interpreter")
+
+    def test_web_index_route(self):
+        res = self.client.get("/")
+        self.assertEqual(res.status_code, 200)
+        self.assertIn("Haunted Terminal", res.text)
+        self.assertIn("T H E   G H O S T", res.text)
+
+    def test_web_status_route(self):
+        res = self.client.get("/api/status")
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["status"], "haunted")
+
+    def test_web_api_command_ls(self):
+        res = self.client.post("/api/command", json={"command": "ls", "session_id": "test_web_1"})
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["command"], "ls")
+        self.assertIn("uncommitted_sins", data["simulated_output"])
+        self.assertIsInstance(data["ghost_reply"], str)
+
+    def test_web_api_command_mood(self):
+        res = self.client.post("/api/command", json={"command": "mood sarcastic", "session_id": "test_web_2"})
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["mood"], "sarcastic")
+        self.assertIn("Sarcastic Ghost", data["mood_title"])
+
+    def test_web_api_command_exorcism(self):
+        res = self.client.post("/api/command", json={"command": "exorcism", "session_id": "test_web_3"})
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertIn("EXORCISM", data["simulated_output"])
+
+
 if __name__ == "__main__":
     unittest.main()
+
