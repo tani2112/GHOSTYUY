@@ -9,18 +9,37 @@ import time
 import random
 from typing import Optional, List, Dict
 
-from rich.console import Console
-from rich.panel import Panel
-from rich.table import Table
-from rich.text import Text
-from rich.markdown import Markdown
-from rich.layout import Layout
-from rich.align import Align
-from rich.style import Style
+from config import GhostConfig, GHOST_MOODS, OPEN_WEIGHT_MODELS, SIMULATED_FILES
 
-from config import GhostConfig, GHOST_MOODS, OPEN_WEIGHT_MODELS
-
-console = Console()
+try:
+    from rich.console import Console
+    from rich.panel import Panel
+    from rich.table import Table
+    from rich.text import Text
+    from rich.markdown import Markdown
+    from rich.layout import Layout
+    from rich.align import Align
+    from rich.style import Style
+    console = Console()
+except ImportError:
+    class DummyConsole:
+        def print(self, *args, **kwargs):
+            import re
+            cleaned = re.sub(r'\[.*?\]', '', str(args[0])) if args else ""
+            print(cleaned)
+        def clear(self):
+            pass
+        def status(self, *args, **kwargs):
+            from contextlib import contextmanager
+            @contextmanager
+            def dummy(): yield
+            return dummy()
+        def input(self, prompt=""):
+            import re
+            clean_prompt = re.sub(r'\[.*?\]', '', prompt)
+            return input(clean_prompt)
+    console = DummyConsole()
+    Panel = Table = Text = Markdown = Layout = Align = Style = object
 
 # Atmospheric random background whispers
 RANDOM_ATMOSPHERES = [

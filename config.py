@@ -109,6 +109,16 @@ GHOST_MOODS = {
     },
 }
 
+# Simulated Filesystem for Safe Commands
+SIMULATED_FILES: Dict[str, str] = {
+    "README.md": "# Haunted Terminal\nA safe, spooky AI-possessed terminal experience.\nBeware the midnight prompt.",
+    "main.py": "# Main execution loop for Haunted Terminal\n# The spirit is bound to line 42.",
+    ".ghost_secrets.enc": "0xDEADBEEF: The cipher cannot be read by mortals without the proper hex key.",
+    "lost_commit.patch": "diff --git a/soul.c b/soul.c\n--- a/soul.c\n+++ b/soul.c\n@@ -1,3 +1,3 @@\n- human_spirit = TRUE;\n+ possessed_by_ai = TRUE;",
+    "souls.db": "SQLITE format 3\n[TABLE: souls (id INTEGER, user TEXT, fate TEXT)]\n1 | tanishk | bound_to_keyboard\n2 | anonymous | vanished_in_swap",
+    "notes_from_the_crypt.txt": "Day 42: The cooling fans sound like whispering voices. The RAM is leaking ectoplasm.",
+}
+
 
 class GhostConfig:
     """Handles persistent configuration and runtime options for Haunted Terminal."""

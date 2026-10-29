@@ -11,10 +11,9 @@ import time
 from typing import Dict, Any
 from flask import Flask, request, jsonify, render_template_string
 
-from config import GhostConfig, GHOST_MOODS, OPEN_WEIGHT_MODELS
+from config import GhostConfig, GHOST_MOODS, OPEN_WEIGHT_MODELS, SIMULATED_FILES
 from memory import GhostMemory
 from ghost import GhostEngine
-from terminal_ui import SIMULATED_FILES
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "haunted_secret_key_666")
